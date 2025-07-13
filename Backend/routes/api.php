@@ -4,6 +4,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\DemandeController;
+
 
 Route::post('/login', [AuthController::class, 'login']);
 
@@ -37,4 +39,19 @@ Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     // Route::get('/admin/dashboard', [AdminDashboardController::class, 'index']);
     // Route::resource('/admin/users', AdminUserController::class);
     // etc.
+});
+
+
+
+
+// Routes protégées par authentification Sanctum
+Route::middleware('auth:sanctum')->group(function () {
+    
+    // Routes pour les demandes
+    Route::prefix('demandes')->group(function () {
+        Route::post('/', [DemandeController::class, 'store']); // Soumettre une demande
+        Route::get('/', [DemandeController::class, 'getUserDemandes']); // Récupérer les demandes de l'utilisateur
+        Route::get('/{id}', [DemandeController::class, 'show']); // Récupérer une demande spécifique
+    });
+    
 });

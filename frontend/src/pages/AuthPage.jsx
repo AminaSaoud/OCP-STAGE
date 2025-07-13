@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { axiosClient } from '../api/axios';
 import { useAuth } from '../contexts/AuthContext';
-import ocp_canva_white from '../../public/images/ocp_canva_white.png';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -36,7 +35,7 @@ const Login = () => {
 
       // redirection en fonction du rôle
       if (user.role === 'collaborateur') {
-        navigate('/collaborateur/dashboard');
+        navigate('/collaborateur/demande');
       } else if (user.role === 'controleur de magasin') {
         navigate('/magasin/dashboard');
       } else if (user.role === 'controleur technique') {
@@ -69,7 +68,7 @@ const Login = () => {
               <div className="logo-icon">
                 <Link className="navbar-brand d-flex align-items-center" to="/">
                <img 
-                src={ocp_canva_white} 
+                src="/images/ocp_canva_white.png"
                 alt="Logo OCP" 
                 style={{ height: '70px', width: 'auto', marginRight: '10px', transition: 'opacity 0.3s ease' }} 
               />

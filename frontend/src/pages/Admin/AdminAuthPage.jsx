@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { axiosClient } from '../../api/axios';
 import { useAuth } from '../../contexts/AuthContext';
-import ocp_canva_white from '../../../public/images/ocp_canva_white.png';
 
 const AdminLogin = () => {
   const [email, setEmail] = useState('');
@@ -15,7 +14,7 @@ const AdminLogin = () => {
   const { login } = useAuth();
 
   // Image de fond pour les administrateurs
-  const backgroundImageUrl = '/images/ocp_background_admin.jpg';
+  const backgroundImageUrl = '/images/ocp_background_home.jpg';
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -79,7 +78,7 @@ const AdminLogin = () => {
               <div className="admin-logo-icon">
                 <Link className="navbar-brand d-flex align-items-center" to="/">
                 <img 
-                  src={ocp_canva_white} 
+                  src="/images/ocp_canva_white.png"
                   alt="Logo OCP Admin" 
                   style={{ height: '70px', width: 'auto', marginRight: '10px', transition: 'opacity 0.3s ease' }} 
                 />

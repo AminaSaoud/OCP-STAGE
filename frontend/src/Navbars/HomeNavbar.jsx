@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, Leaf } from 'lucide-react';
 import { Link } from 'react-router-dom';
-import ocp_logo_blanc from '../../public/images/ocp_logo_blanc.png';
 
 export default function ScrollNavbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -29,7 +28,7 @@ export default function ScrollNavbar() {
 
           <Link className="navbar-brand d-flex align-items-center" to="/">
               <img 
-                src={ocp_logo_blanc} 
+                src="/images/ocp_logo_blanc.png"
                 alt="Logo ENSAJ Entreprises" 
                 style={{ height: '50px', width: 'auto', marginRight: '10px', transition: 'opacity 0.3s ease' }} 
               />
