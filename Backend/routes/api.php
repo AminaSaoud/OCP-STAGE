@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\DemandeController;
+use App\Http\Controllers\DemandeTechniqueController;
 
 
 Route::post('/login', [AuthController::class, 'login']);
@@ -54,4 +55,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::get('/{id}', [DemandeController::class, 'show']); // Récupérer une demande spécifique
     });
     
+});
+
+
+Route::prefix('tech')->middleware(['auth:sanctum','tech.controleur'])->group(function () {
+    Route::get('/demandes', [DemandeTechniqueController::class, 'index']);
+    Route::get('/demandes/{id}', [DemandeTechniqueController::class, 'show']);
+    Route::post('/demandes/{id}/accepter', [DemandeTechniqueController::class, 'accepter']);
+    Route::post('/demandes/{id}/rejeter', [DemandeTechniqueController::class, 'rejeter']);
 });

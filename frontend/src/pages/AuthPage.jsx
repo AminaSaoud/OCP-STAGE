@@ -39,7 +39,7 @@ const Login = () => {
       } else if (user.role === 'controleur de magasin') {
         navigate('/magasin/dashboard');
       } else if (user.role === 'controleur technique') {
-        navigate('/tech/dashboard');
+        navigate('/technique/demandes');
       }
 
     } catch (err) {

@@ -1,30 +1,25 @@
 import React, { useState } from 'react';
 import { 
   Home, 
-  FileText, 
   Users, 
-  Settings, 
-  LogOut, 
-  ChevronDown, 
-  ChevronRight,
   Building2,
-  Package,
-  Calendar,
-  BarChart3,
-  Bell,
-  Mail,
+  TrendingUp,
+  Archive,
   Search,
-  Menu,
   X,
   User,
-  Shield
+  ChevronDown,
+  ChevronRight,
+  LogOut
 } from 'lucide-react';
-import { useAuth } from '../contexts/AuthContext';
+import { useAuth } from '../../contexts/AuthContext';
+import { Link, useLocation } from 'react-router-dom';
 
-const Sidebar = ({ isOpen, onToggle }) => {
+const AdminSidebar = ({ isOpen, onToggle }) => {
   const { user, logout } = useAuth();
   const [expandedMenus, setExpandedMenus] = useState({});
   const [searchQuery, setSearchQuery] = useState('');
+  const location = useLocation();
 
   const toggleMenu = (menuKey) => {
     setExpandedMenus(prev => ({
@@ -36,67 +31,44 @@ const Sidebar = ({ isOpen, onToggle }) => {
   const menuItems = [
     {
       key: 'dashboard',
-      label: 'Tableau de bord',
+      label: 'Page Dashboard',
       icon: Home,
-      path: '/dashboard',
+      path: '/admin/dashboard',
       badge: null
     },
     {
-      key: 'demandes',
-      label: 'Gestion des demandes',
-      icon: FileText,
-      submenu: [
-        { label: 'Nouvelle demande', path: '/ajouter-demande' },
-        { label: 'Mes demandes', path: '/mes-demandes' },
-        { label: 'Toutes les demandes', path: '/toutes-demandes' }
-      ]
-    },
-    {
-      key: 'materiel',
-      label: 'Gestion du matériel',
-      icon: Package,
-      submenu: [
-        { label: 'Inventaire', path: '/inventaire' },
-        { label: 'Ajouter matériel', path: '/ajouter-materiel' },
-        { label: 'Historique', path: '/historique-materiel' }
-      ]
-    },
-    {
-      key: 'utilisateurs',
-      label: 'Utilisateurs',
+      key: 'collaborateurs',
+      label: 'Collaborateurs',
       icon: Users,
       submenu: [
-        { label: 'Tous les utilisateurs', path: '/utilisateurs' },
-        { label: 'Ajouter utilisateur', path: '/ajouter-utilisateur' },
-        { label: 'Profils', path: '/profils' }
+        { label: 'Ajouter un collaborateur', path: '/admin/collaborateurs/ajouter' },
+        { label: 'Tous les collaborateurs', path: '/admin/collaborateurs' }
       ]
     },
     {
-      key: 'rapports',
-      label: 'Rapports & Statistiques',
-      icon: BarChart3,
+      key: 'controleurs-magasin',
+      label: 'Contrôleurs de Magasin',
+      icon: Building2,
       submenu: [
-        { label: 'Rapports mensuels', path: '/rapports-mensuels' },
-        { label: 'Statistiques', path: '/statistiques' },
-        { label: 'Exports', path: '/exports' }
+        { label: 'Ajouter contrôleur magasin', path: '/admin/controleurs-magasin/ajouter' },
+        { label: 'Tous les contrôleurs magasin', path: '/admin/controleurs-magasin' }
       ]
     },
     {
-      key: 'calendrier',
-      label: 'Calendrier',
-      icon: Calendar,
-      path: '/calendrier',
-      badge: 'Nouveau'
-    },
-    {
-      key: 'parametres',
-      label: 'Paramètres',
-      icon: Settings,
+      key: 'controleurs-technique',
+      label: 'Contrôleurs Technique',
+      icon: TrendingUp,
       submenu: [
-        { label: 'Profil', path: '/profil' },
-        { label: 'Sécurité', path: '/securite' },
-        { label: 'Notifications', path: '/notifications' }
+        { label: 'Ajouter contrôleur technique', path: '/admin/controleurs-technique/ajouter' },
+        { label: 'Tous les contrôleurs technique', path: '/admin/controleurs-technique' }
       ]
+    },
+    {
+      key: 'archives',
+      label: 'Archive',
+      icon: Archive,
+      path: '/admin/archives',
+      badge: null
     }
   ];
 
@@ -117,7 +89,7 @@ const Sidebar = ({ isOpen, onToggle }) => {
 
       {/* Sidebar */}
       <div className={`
-        fixed top-0 left-0 h-full w-64 bg-white text-gray-900 shadow-xl transform transition-transform duration-300 ease-in-out z-50 flex flex-col
+        fixed top-0 left-0 h-full w-64 bg-white text-gray-900 shadow-xl transform transition-transform duration-300 ease-in-out z-50
         ${isOpen ? 'translate-x-0' : '-translate-x-full lg:translate-x-0'}
       `}>
         {/* Header du sidebar */}
@@ -128,7 +100,7 @@ const Sidebar = ({ isOpen, onToggle }) => {
             </div>
             <div>
               <h1 className="text-lg font-bold text-gray-800">OCP JFC4</h1>
-              <p className="text-xs text-gray-500">Gestion Matériel</p>
+              <p className="text-xs text-gray-500">Administration</p>
             </div>
           </div>
           <button
@@ -137,6 +109,23 @@ const Sidebar = ({ isOpen, onToggle }) => {
           >
             <X className="w-5 h-5 text-gray-600" />
           </button>
+        </div>
+
+        {/* Profil administrateur */}
+        <div className="p-4 border-b border-gray-200">
+          <div className="flex items-center space-x-3">
+            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
+              <User className="w-5 h-5 text-green-600" />
+            </div>
+            <div className="flex-1 min-w-0">
+              <p className="text-sm font-medium text-gray-800 truncate">
+                {user?.prenom || 'Admin'} {user?.nom || 'User'}
+              </p>
+              <p className="text-xs text-gray-500 truncate">
+                Administrateur
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* Barre de recherche */}
@@ -148,47 +137,32 @@ const Sidebar = ({ isOpen, onToggle }) => {
               placeholder="Rechercher..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm bg-white text-gray-900 placeholder-gray-400"
+              className="w-full pl-10 pr-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent text-sm"
             />
           </div>
         </div>
 
-        {/* Profil utilisateur */}
-        <div className="p-4 border-b border-gray-200">
-          <div className="flex items-center space-x-3">
-            <div className="w-10 h-10 bg-green-100 rounded-full flex items-center justify-center">
-              <User className="w-5 h-5 text-green-600" />
-            </div>
-            <div className="flex-1 min-w-0">
-              <p className="text-sm font-medium text-gray-800 truncate">
-                {user?.prenom} {user?.nom}
-              </p>
-              <p className="text-xs text-gray-500 truncate">
-                {user?.role === 'admin' ? 'Administrateur' : 'Collaborateur'}
-              </p>
-            </div>
-          </div>
-        </div>
-
         {/* Navigation */}
-        <nav className="flex-1 overflow-y-auto py-4 sidebar-scroll">
+        <nav
+          className="flex-1 overflow-y-scroll py-4 scrollbar-none scroll-smooth scroll-momentum"
+          style={{ maxHeight: 'calc(100vh - 260px)' }}
+        >
           <ul className="space-y-1 px-3">
             {filteredMenuItems.map((item) => (
               <li key={item.key}>
                 {item.submenu ? (
-                  // Menu avec sous-menus
                   <div>
                     <button
                       onClick={() => toggleMenu(item.key)}
                       className={`
-                        w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors whitespace-nowrap
+                        w-full flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors
                         ${expandedMenus[item.key] 
                           ? 'bg-green-50 text-green-700 border border-green-600' 
                           : 'bg-white text-gray-900 hover:bg-green-50 border border-transparent'
                         }
                       `}
                     >
-                      <div className="flex items-center space-x-3 whitespace-nowrap">
+                      <div className="flex items-center space-x-3">
                         <item.icon className="w-5 h-5" />
                         <span>{item.label}</span>
                       </div>
@@ -210,25 +184,26 @@ const Sidebar = ({ isOpen, onToggle }) => {
                       <ul className="mt-1 ml-6 space-y-1">
                         {item.submenu.map((subItem, index) => (
                           <li key={index}>
-                            <a
-                              href={subItem.path}
-                              className="block px-3 py-2 text-sm bg-white text-gray-900 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors border border-transparent hover:border-green-600"
+                            <Link
+                              to={subItem.path}
+                              className={`block px-3 py-2 text-sm bg-white text-gray-900 hover:text-green-700 hover:bg-green-50 rounded-lg transition-colors border border-transparent hover:border-green-600
+                                ${location.pathname === subItem.path ? 'bg-green-50 text-green-700 border-green-600 border' : ''}
+                              `}
                             >
                               {subItem.label}
-                            </a>
+                            </Link>
                           </li>
                         ))}
                       </ul>
                     )}
                   </div>
                 ) : (
-                  // Menu simple
-                  <a
-                    href={item.path}
+                  <Link
+                    to={item.path}
                     className={`
                       flex items-center justify-between px-3 py-2 text-sm font-medium rounded-lg transition-colors
                       bg-white text-gray-900 hover:bg-green-50 border border-transparent hover:border-green-600
-                      ${window.location.pathname === item.path 
+                      ${location.pathname === item.path 
                         ? 'bg-green-50 text-green-700 border-green-600 border' 
                         : ''
                       }
@@ -243,26 +218,16 @@ const Sidebar = ({ isOpen, onToggle }) => {
                         {item.badge}
                       </span>
                     )}
-                  </a>
+                  </Link>
                 )}
               </li>
             ))}
           </ul>
         </nav>
 
-        {/* Footer du sidebar */}
-        <div className="p-4 border-t border-gray-200">
-          <button
-            onClick={logout}
-            className="w-full flex items-center space-x-3 px-3 py-2 text-sm font-medium bg-white text-gray-900 hover:bg-red-50 hover:text-red-700 rounded-lg transition-colors border border-transparent hover:border-red-600"
-          >
-            <LogOut className="w-5 h-5" />
-            <span>Déconnexion</span>
-          </button>
-        </div>
       </div>
     </>
   );
 };
 
-export default Sidebar; 
+export default AdminSidebar;
