@@ -47,7 +47,7 @@ const Sidebar = ({ isOpen, onToggle }) => {
       icon: FileText,
       submenu: [
         { label: 'Nouvelle demande', path: '/ajouter-demande' },
-        { label: 'Mes demandes', path: '/mes-demandes' },
+        { label: 'Mes demandes', path: '/collaborateur/mes-demandes' },
         { label: 'Toutes les demandes', path: '/toutes-demandes' }
       ]
     },

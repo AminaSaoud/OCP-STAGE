@@ -8,12 +8,16 @@ use App\Http\Controllers\DemandeController;
 use App\Http\Controllers\DemandeTechniqueController;
 
 
+use App\Http\Controllers\UtilisateurController;
+
+
 Route::post('/login', [AuthController::class, 'login']);
 
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/force-change-password', [AuthController::class, 'forceChangePassword']);
 });
 
 
@@ -23,7 +27,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/admin/login', [AdminAuthController::class, 'login']);
 
 // Routes protégées pour les administrateurs
-Route::middleware(['auth:sanctum'])->group(function () {
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
     // Déconnexion admin
     Route::post('/admin/logout', [AdminAuthController::class, 'logout']);
     
@@ -32,15 +36,39 @@ Route::middleware(['auth:sanctum'])->group(function () {
     
     // Vérifier l'accès administrateur
     Route::get('/admin/check-access', [AdminAuthController::class, 'checkAdminAccess']);
+
+
+    
+    /*
+    |--------------------------------------------------------------------------
+    | Gestion des utilisateurs (par l’admin)
+    |--------------------------------------------------------------------------
+    */
+    // 👤 Ajouter un utilisateur selon le rôle
+    Route::post('/utilisateurs/collaborateur', [UtilisateurController::class, 'storeCollaborateur']);
+    Route::post('/utilisateurs/magasin', [UtilisateurController::class, 'storeControleurMagasin']);
+    Route::post('/utilisateurs/technique', [UtilisateurController::class, 'storeControleurTechnique']);
+
+    // 📋 Lire les utilisateurs par rôle ou archivés
+    Route::get('/utilisateurs/role/{role}', [UtilisateurController::class, 'getByRole']);
+    Route::get('/utilisateurs/archives', [UtilisateurController::class, 'archives']);
+
+    // 🚫 Activer / désactiver
+    Route::put('/utilisateurs/{id}/desactiver', [UtilisateurController::class, 'desactiver']);
+    Route::put('/utilisateurs/{id}/reactiver', [UtilisateurController::class, 'reactiver']);
+
+    // ✏️ Modifier un utilisateur
+    Route::put('/utilisateurs/{id}', [UtilisateurController::class, 'update']);
+
+    // 👤 Récupérer un utilisateur par son id
+    Route::get('/utilisateurs/{id}', [UtilisateurController::class, 'show']);
+
+    Route::get('/test-admin', function () {
+        return response()->json(['message' => 'Accès admin OK']);
+    });
 });
 
-// Middleware personnalisé pour protéger les routes admin
-Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-    // Toutes vos routes d'administration ici
-    // Route::get('/admin/dashboard', [AdminDashboardController::class, 'index']);
-    // Route::resource('/admin/users', AdminUserController::class);
-    // etc.
-});
+
 
 
 
@@ -64,3 +92,5 @@ Route::prefix('tech')->middleware(['auth:sanctum','tech.controleur'])->group(fun
     Route::post('/demandes/{id}/accepter', [DemandeTechniqueController::class, 'accepter']);
     Route::post('/demandes/{id}/rejeter', [DemandeTechniqueController::class, 'rejeter']);
 });
+
+

@@ -7,13 +7,19 @@ import MesDemandes from "../pages/Collaborateur/MesDemandes";
 import DashboardTechnique from "../pages/Technique/DashboardTechnique";
 import ProtectedRoute from "../components/ProtectedRoute";
 import DetailDemandeTechnique from "../pages/Technique/DetailDemandeTechnique";
-import Dashboard from "../pages/Dashboard";
+import Dashboard from "../pages/Admin/Dashboard";
+import AjouterControleurTechnique from "../pages/Admin/AjouterControleurTechnique";
+import AllControleursTechnique from "../pages/Admin/AllControleursTechnique";
+import ModifierControleurTechnique from "../pages/Admin/ModifierControleurTechnique";
+import Archives from "../pages/Admin/Archives";
+import ForceChangePassword from "../pages/AuthPage";
 import AjouterCollaborateur from "../pages/Admin/AjouterCollaborateur";
 import AllCollaborateurs from "../pages/Admin/AllCollaborateurs";
 import ModifierCollaborateur from "../pages/Admin/ModifierCollaborateur";
 import AjouterControleurMagasin from "../pages/Admin/AjouterControleurMagasin";
 import AllControleursMagasin from "../pages/Admin/AllControleursMagasin";
 import ModifierControleurMagasin from "../pages/Admin/ModifierControleurMagasin";
+import DetailDemandeCollaborateur from "../pages/Collaborateur/DetailDemandeCollaborateur";
 
 export const router = createBrowserRouter([
   {
@@ -24,16 +30,12 @@ export const router = createBrowserRouter([
     path: "/login", 
     element: <Login />,
   },
-  {
-    path: "/dashboard", 
-    element: <Dashboard />,
-  },
 
 
   {
     path: "/admin/login", 
     element: 
-    <ProtectedRoute requiredRole="admin"> <AdminLogin /> </ProtectedRoute>,
+     <AdminLogin /> ,
   },
 
 
@@ -145,12 +147,17 @@ export const router = createBrowserRouter([
 
   {
     path: "/collaborateur/demande", 
-    element: <DemandeSubmissionForm />,
+    element:( <ProtectedRoute><DemandeSubmissionForm /> </ProtectedRoute>),
+  },
+
+  {
+    path: "/collaborateur/demande/:id",
+    element: (<ProtectedRoute ><DetailDemandeCollaborateur /> </ProtectedRoute>),
   },
 
   {
     path: "/collaborateur/mes-demandes", 
-    element: <MesDemandes />,
+    element: (<ProtectedRoute><MesDemandes /> </ProtectedRoute>),
   },
 
   {

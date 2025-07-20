@@ -8,7 +8,9 @@ const DemandeForm = () => {
     categorie: '',
     designation: '',
     description: '',
-    justification_file: null
+    justification_file: null,
+    quantite: 1,
+    type: 'mobilisable'
   });
 
   const [loading, setLoading] = useState(false);
@@ -115,6 +117,8 @@ const DemandeForm = () => {
       formDataToSend.append('designation', formData.designation);
       formDataToSend.append('description', formData.description);
       formDataToSend.append('justification_file', formData.justification_file);
+      formDataToSend.append('quantite', formData.quantite);
+      formDataToSend.append('type', formData.type);
 
       const response = await axiosClient.post('/api/demandes', formDataToSend, {
         headers: {
@@ -212,6 +216,44 @@ const DemandeForm = () => {
               </div>
             </div>
 
+            {/* Quantité */}
+            <div className="space-y-2">
+              <label htmlFor="quantite" className="block text-sm font-semibold text-gray-700">
+                Quantité <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                id="quantite"
+                name="quantite"
+                min={1}
+                value={formData.quantite}
+                onChange={handleInputChange}
+                required
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+                placeholder="Quantité"
+              />
+            </div>
+
+            {/* Type */}
+            <div className="space-y-2">
+              <label htmlFor="type" className="block text-sm font-semibold text-gray-700">
+                Type <span className="text-red-500">*</span>
+              </label>
+              <select
+                id="type"
+                name="type"
+                value={formData.type}
+                onChange={handleInputChange}
+                required
+                className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-green-500 transition-all duration-200"
+              >
+                <option value="mobilisable">Mobilisable</option>
+                <option value="immobilisable">Immobilisable</option>
+              </select>
+            </div>
+
+
+            
             {/* Désignation */}
             <div className="space-y-2">
               <label htmlFor="designation" className="block text-sm font-semibold text-gray-700">
@@ -309,6 +351,7 @@ const DemandeForm = () => {
                 </div>
               )}
             </div>
+
 
             {/* Bouton de soumission */}
             <div className="pt-6">

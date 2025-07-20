@@ -22,6 +22,8 @@ class DemandeController extends Controller
                 'designation' => 'required|string|max:191',
                 'description' => 'required|string',
                 'justification_file' => 'required|file|mimes:pdf,xlsx,xls,doc,docx|max:5120', // 5MB max
+                'quantite' => 'required|integer|min:1',
+                'type' => 'required|in:mobilisable,immobilisable',
             ]);
 
             // Récupérer l'utilisateur connecté
@@ -54,6 +56,8 @@ class DemandeController extends Controller
                 'id_collaborateur' => $user->id_utilisateur,
                 'etat' => 'en_attente',
                 'disponible' => false,
+                'quantite' => $request->quantite,
+                'type' => $request->type,
             ]);
 
             return response()->json([

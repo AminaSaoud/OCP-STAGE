@@ -13,7 +13,7 @@ class Demande extends Model
 
     protected $fillable = [
         'id_demande', 'date_demande', 'categorie', 'designation', 'description',
-        'justification', 'etat', 'date_tech', 'date_mag', 'date_rec',
+        'justification', 'quantite', 'type', 'etat', 'date_tech', 'date_mag', 'date_rec',
         'disponible', 'id_collaborateur', 'id_tech', 'id_mag'
     ];
 

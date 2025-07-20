@@ -24,22 +24,21 @@ class AuthController extends Controller
             ]);
         }
 
-        
         // Vérification du statut actif
-        if (!$user->actif) {
-            throw ValidationException::withMessages([
-                'email' => ['Ce compte est désactivé. Veuillez contacter un administrateur.'],
-            ]);
-        }
+    if (!$user->actif) {
+        throw ValidationException::withMessages([
+            'email' => ['Ce compte est désactivé. Veuillez contacter un administrateur.'],
+        ]);
+    }
 
-        // Vérification du changement de mot de passe obligatoire
-        if ($user->must_change_password) {
-            $token = $user->createToken('auth_token')->plainTextToken;
-            return response()->json([
-                'must_change_password' => true,
-                'token' => $token
-            ], 200);
-        }
+    // Vérification du changement de mot de passe obligatoire
+    if ($user->must_change_password) {
+        $token = $user->createToken('auth_token')->plainTextToken;
+        return response()->json([
+            'must_change_password' => true,
+            'token' => $token
+        ], 200);
+    }
 
         return response()->json([
             'token' => $user->createToken('auth_token')->plainTextToken,

@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
+
+
+
+
 class UtilisateurController extends Controller
 {
     public function storeCollaborateur(Request $request)

@@ -26,11 +26,34 @@ const categoriesList = [
 
 const etatsList = [
   'Tous',
-  'en attente',
-  'approuvée',
-  'rejetée',
-  'en cours',
+  'en_attente',
+  'refuse',
+  'valide_technique',
+  'valide',
+  'materiel_indispo',
 ];
+
+const getEtatLabel = (etat) => {
+  switch (etat) {
+    case 'en_attente': return 'En attente';
+    case 'refuse': return 'Refusé';
+    case 'valide_technique': return 'Validé technique';
+    case 'valide': return 'Validé';
+    case 'materiel_indispo': return 'Matériel indisponible';
+    default: return etat;
+  }
+};
+
+const getEtatColor = (etat) => {
+  switch (etat) {
+    case 'en_attente': return 'bg-yellow-100 text-yellow-800';
+    case 'refuse': return 'bg-red-100 text-red-800';
+    case 'valide_technique': return 'bg-blue-100 text-blue-800';
+    case 'valide': return 'bg-green-100 text-green-800';
+    case 'materiel_indispo': return 'bg-gray-100 text-gray-800';
+    default: return 'bg-gray-100 text-gray-800';
+  }
+};
 
 const MesDemandes = () => {
   const { user } = useAuth();
@@ -72,7 +95,7 @@ const MesDemandes = () => {
 
   const filteredDemandes = demandes.filter((demande) => {
     const matchCategorie = categorie === 'Toutes' || normalize(demande.categorie) === normalize(categorie);
-    const matchEtat = etat === 'Tous' || (demande.etat && normalize(demande.etat).includes(normalize(etat)));
+    const matchEtat = etat === 'Tous' || (demande.etat && demande.etat === etat);
     const matchSearch =
       search.trim() === '' ||
       (demande.designation && normalize(demande.designation).includes(normalize(search))) ||
@@ -82,7 +105,7 @@ const MesDemandes = () => {
 
   return (
     <Layout>
-      <div className="max-w-5xl mx-auto">
+      <div className="w-full">
         <h1 className="text-2xl font-bold text-gray-900 mb-6">Mes demandes</h1>
 
         {/* Filtres et recherche */}
@@ -109,7 +132,7 @@ const MesDemandes = () => {
               className="px-3 py-2 border border-gray-200 rounded-lg bg-white text-gray-900 focus:outline-none focus:ring-2 focus:ring-green-500"
             >
               {etatsList.map(et => (
-                <option key={et} value={et}>{et.charAt(0).toUpperCase() + et.slice(1)}</option>
+                <option key={et} value={et}>{et === 'Tous' ? 'Tous' : getEtatLabel(et)}</option>
               ))}
             </select>
           </div>
@@ -144,29 +167,31 @@ const MesDemandes = () => {
             <p>Aucune demande trouvée.</p>
           </div>
         ) : (
-          <div className="overflow-x-auto rounded-xl shadow border border-gray-200 bg-white">
-            <table className="min-w-full divide-y divide-gray-200">
+          <div className="rounded-xl shadow border border-gray-200 bg-white w-full">
+            <table className="min-w-full table-fixed divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Désignation</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Catégorie</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date</th>
-                  <th className="px-6 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">État</th>
-                  <th className="px-6 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Détail</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider w-1/4 max-w-xs">Désignation</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Description</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Catégorie</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">Date</th>
+                  <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase tracking-wider">État</th>
+                  <th className="px-4 py-3 text-center text-xs font-semibold text-gray-700 uppercase tracking-wider">Détail</th>
                 </tr>
               </thead>
               <tbody className="bg-white divide-y divide-gray-100">
                 {filteredDemandes.map((demande) => (
                   <tr key={demande.id_demande}>
-                    <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{demande.designation}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-gray-700">{demande.categorie}</td>
-                    <td className="px-6 py-4 whitespace-nowrap text-gray-500">{demande.created_at ? demande.created_at.split('T')[0] : ''}</td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusColors[demande.etat?.toLowerCase()] || 'bg-gray-100 text-gray-800'}`}>
-                        {demande.etat}
+                    <td className="px-4 py-4 whitespace-nowrap font-medium text-gray-900 max-w-xs truncate">{demande.designation}</td>
+                    <td className="px-4 py-4 whitespace-nowrap text-gray-700 max-w-xs truncate">{demande.description}</td>
+                    <td className="px-4 py-4 whitespace-nowrap text-gray-700">{demande.categorie}</td>
+                    <td className="px-4 py-4 whitespace-nowrap text-gray-500">{demande.created_at ? demande.created_at.split('T')[0] : ''}</td>
+                    <td className="px-4 py-4 whitespace-nowrap">
+                      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${getEtatColor(demande.etat)}`}>
+                        {getEtatLabel(demande.etat)}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-center">
+                    <td className="px-4 py-4 whitespace-nowrap text-center">
                       <a
                         href={`/collaborateur/demande/${demande.id_demande}`}
                         className="inline-flex items-center px-3 py-2 text-sm font-medium text-green-700 bg-green-50 hover:bg-green-100 rounded-lg transition-colors"
