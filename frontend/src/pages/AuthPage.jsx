@@ -28,8 +28,19 @@ const Login = () => {
         password
       });
 
+      
+      // Cas où le backend demande un changement de mot de passe
+      if (response.data.must_change_password) {
+        localStorage.setItem("forceChangeToken", response.data.token);
+        localStorage.setItem("forceChangeEmail", email);
+        setLoading(false);
+        navigate("/force-change-password");
+        return;
+      }
+
       const token = response.data.token;
       const user = response.data.user;
+      
 
       login(token, user);
 

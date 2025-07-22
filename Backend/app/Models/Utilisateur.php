@@ -15,8 +15,9 @@ class Utilisateur extends Authenticatable
     protected $primaryKey = 'id_utilisateur';
     public $incrementing = false;
     protected $keyType = 'string';
+    public $timestamps = true;
 
-    protected $fillable = ['id_utilisateur', 'nom', 'prenom', 'email', 'mdp', 'tel', 'service', 'fonction', 'role', 'id_admin'];
+    protected $fillable = ['id_utilisateur', 'nom', 'prenom', 'email', 'mdp', 'tel', 'date_naissance',  'cin', 'date_prise_fonction', 'service', 'fonction', 'matricule', 'role', 'id_admin', 'actif','must_change_password'];
 
     protected $hidden = ['mdp'];
 

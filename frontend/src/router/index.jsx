@@ -12,7 +12,7 @@ import AjouterControleurTechnique from "../pages/Admin/AjouterControleurTechniqu
 import AllControleursTechnique from "../pages/Admin/AllControleursTechnique";
 import ModifierControleurTechnique from "../pages/Admin/ModifierControleurTechnique";
 import Archives from "../pages/Admin/Archives";
-import ForceChangePassword from "../pages/AuthPage";
+import ForceChangePassword from "../pages/ForceChangePassword";
 import AjouterCollaborateur from "../pages/Admin/AjouterCollaborateur";
 import AllCollaborateurs from "../pages/Admin/AllCollaborateurs";
 import ModifierCollaborateur from "../pages/Admin/ModifierCollaborateur";
@@ -31,6 +31,9 @@ export const router = createBrowserRouter([
     element: <Login />,
   },
 
+
+
+  
 
   {
     path: "/admin/login", 

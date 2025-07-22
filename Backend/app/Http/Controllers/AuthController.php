@@ -37,6 +37,7 @@ class AuthController extends Controller
         return response()->json([
             'must_change_password' => true,
             'token' => $token
+            
         ], 200);
     }
 

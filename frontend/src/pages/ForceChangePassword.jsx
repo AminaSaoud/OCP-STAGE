@@ -7,6 +7,8 @@ import {
   FaCheckCircle,
   FaExclamationTriangle,
 } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 export default function ForceChangePassword() {
   const [form, setForm] = useState({
@@ -20,12 +22,13 @@ export default function ForceChangePassword() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
     setSuccess("");
@@ -37,10 +40,30 @@ export default function ForceChangePassword() {
       return;
     }
 
-    setTimeout(() => {
+    try {
+      // Remplace par la vraie façon de récupérer l'email de l'utilisateur
+      const email = localStorage.getItem("forceChangeEmail"); 
+
+      const response = await axios.post("http://localhost:8000/api/force-change-password", {
+        email,
+        old_password: form.old_password,
+        new_password: form.new_password,
+        new_password_confirmation: form.new_password_confirmation,
+      });
+
       setSuccess("Mot de passe modifié avec succès !");
       setIsLoading(false);
-    }, 2000);
+
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+    } catch (err) {
+      setError(
+        err.response?.data?.message ||
+        "Erreur lors du changement de mot de passe"
+      );
+      setIsLoading(false);
+    }
   };
 
   const passwordCriteria = [

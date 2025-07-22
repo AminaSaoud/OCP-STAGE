@@ -12,12 +12,13 @@ use App\Http\Controllers\UtilisateurController;
 
 
 Route::post('/login', [AuthController::class, 'login']);
+Route::post('/force-change-password', [AuthController::class, 'forceChangePassword']);
+
 
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AuthController::class, 'user']);
     Route::post('/logout', [AuthController::class, 'logout']);
-    Route::post('/force-change-password', [AuthController::class, 'forceChangePassword']);
 });
 
 
