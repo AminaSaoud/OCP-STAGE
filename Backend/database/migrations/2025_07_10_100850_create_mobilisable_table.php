@@ -15,17 +15,14 @@ return new class extends Migration
             $table->string('id_m', 10)->primary();
             $table->string('code_M', 16);
             $table->integer('quantite');
-
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamps();
 
             $table->foreign('id_m')
                 ->references('id_m')
                 ->on('materiel')
                 ->onDelete('cascade');
         });
-}
-
+    }
 
     /**
      * Reverse the migrations.

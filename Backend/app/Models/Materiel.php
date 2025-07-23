@@ -11,7 +11,7 @@ class Materiel extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    protected $fillable = ['id_m', 'type_materiel', 'designation', 'description', 'emplacement', 'etat', 'date_E', 'date_S'];
+    protected $fillable = ['id_m', 'type_materiel', 'designation', 'emplacement', 'etat', 'date_E', 'date_S'];
 
     public function mobilisable()
     {

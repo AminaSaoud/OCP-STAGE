@@ -82,6 +82,8 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::post('/', [DemandeController::class, 'store']); // Soumettre une demande
         Route::get('/', [DemandeController::class, 'getUserDemandes']); // Récupérer les demandes de l'utilisateur
         Route::get('/{id}', [DemandeController::class, 'show']); // Récupérer une demande spécifique
+
+       
     });
     
 });
@@ -94,4 +96,9 @@ Route::prefix('tech')->middleware(['auth:sanctum','tech.controleur'])->group(fun
     Route::post('/demandes/{id}/rejeter', [DemandeTechniqueController::class, 'rejeter']);
 });
 
+Route::get('/demandes-a-traiter', [\App\Http\Controllers\DemandesMaterielController::class, 'index']);
+Route::get('/demandes/{id}', [\App\Http\Controllers\DemandesMaterielController::class, 'show']);
+Route::post('/demandes/{id}/affecter-materiel', [\App\Http\Controllers\DemandesMaterielController::class, 'affecterMateriel']);
+Route::post('/demandes/{id}/materiel-indisponible', [\App\Http\Controllers\DemandesMaterielController::class, 'signalerMaterielIndisponible']);
+Route::get('/materiels/recherche', [\App\Http\Controllers\DemandesMaterielController::class, 'rechercherMateriel']);
 

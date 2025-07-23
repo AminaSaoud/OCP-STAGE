@@ -13,19 +13,14 @@ return new class extends Migration
     {
         Schema::create('materiel', function (Blueprint $table) {
             $table->string('id_m', 10)->primary();
-
             $table->enum('type_materiel', ['mobilisable', 'immobilisable']);
             $table->string('designation', 191);
             $table->text('description');
-            $table->string('emplacement', 191);
-
+            $table->string('place', 191);
             $table->timestamp('date_E')->useCurrent();
             $table->timestamp('date_S')->nullable();
-
             $table->enum('etat', ['disponible', 'indisponible'])->default('disponible');
-
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamps();
         });
     }
 

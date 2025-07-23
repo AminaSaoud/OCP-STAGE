@@ -16,12 +16,9 @@ return new class extends Migration
             $table->string('matricule', 16);
             $table->string('numero_S', 16);
             $table->integer('duree_Amort');
-            
-            $table->enum('status', ['neuf', 'réparé', 'en_panne', 'abîmé'])->default('neuf');
-            $table->string('rppt', 255);
-
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->enum('status', ['neuf', 'repare'])->default('neuf');
+            $table->string('rppt_maint', 255)->nullable();
+            $table->timestamps();
 
             $table->foreign('id_m')
                 ->references('id_m')

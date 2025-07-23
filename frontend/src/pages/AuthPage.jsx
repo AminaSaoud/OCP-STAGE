@@ -48,7 +48,7 @@ const Login = () => {
       if (user.role === 'collaborateur') {
         navigate('/collaborateur/demande');
       } else if (user.role === 'controleur de magasin') {
-        navigate('/magasin/dashboard');
+        navigate('/materiel/demandes-materiel');
       } else if (user.role === 'controleur technique') {
         navigate('/technique/demandes');
       }

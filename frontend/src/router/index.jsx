@@ -20,6 +20,8 @@ import AjouterControleurMagasin from "../pages/Admin/AjouterControleurMagasin";
 import AllControleursMagasin from "../pages/Admin/AllControleursMagasin";
 import ModifierControleurMagasin from "../pages/Admin/ModifierControleurMagasin";
 import DetailDemandeCollaborateur from "../pages/Collaborateur/DetailDemandeCollaborateur";
+import DemandeMateriel from "../pages/controleur_materiel/DemandeMateriel";
+import DetailDemandeMateriel from "../pages/controleur_materiel/DetailDemandeMateriel";
 
 export const router = createBrowserRouter([
   {
@@ -178,5 +180,28 @@ export const router = createBrowserRouter([
         <DetailDemandeTechnique />
       </ProtectedRoute>
     )
-  }
+  },
+
+
+
+
+
+  // controlleur materiel
+
+  {
+    path: "/materiel/demandes-materiel",
+    element: (
+      <ProtectedRoute requiredRole="controleur de magasin">
+        <DemandeMateriel />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/materiel/demandes-materiel/:id",
+    element: (
+      <ProtectedRoute requiredRole="controleur de magasin">
+        <DetailDemandeMateriel />
+      </ProtectedRoute>
+    )
+  },
 ]);

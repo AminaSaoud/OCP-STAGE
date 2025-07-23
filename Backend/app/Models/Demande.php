@@ -14,7 +14,7 @@ class Demande extends Model
     protected $fillable = [
         'id_demande', 'date_demande', 'categorie', 'designation', 'description',
         'justification', 'quantite', 'type', 'etat', 'date_tech', 'date_mag', 'date_rec',
-        'disponible', 'id_collaborateur', 'id_tech', 'id_mag'
+         'id_collaborateur', 'id_tech', 'id_mag'
     ];
 
     // Ajout des casts pour une meilleure gestion des types
@@ -47,6 +47,11 @@ class Demande extends Model
     public function historiques()
     {
         return $this->hasMany(Historique::class, 'id_demande');
+    }
+
+    public function materiel()
+    {
+        return $this->belongsTo(Materiel::class, 'materiel_id', 'id_m');
     }
 
     // Méthodes utilitaires ajoutées

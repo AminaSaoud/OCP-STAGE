@@ -13,39 +13,51 @@ return new class extends Migration
     {
         Schema::create('demande', function (Blueprint $table) {
             $table->string('id_demande', 10)->primary();
-
             $table->timestamp('date_demande')->useCurrent();
-
             $table->enum('categorie', [
                 'chantier', 'informatique', 'climatisation', 'électroménager',
                 'mobilier', 'logistique', 'sécurité', 'technique', 'autre'
             ]);
-
             $table->string('designation', 191);
             $table->text('description');
             $table->string('justification', 255);
-
             $table->enum('etat', [
                 'en_attente', 'refuse', 'valide_technique', 'valide', 'materiel_indispo'
             ])->default('en_attente');
-
             $table->timestamp('date_tech')->nullable();
             $table->timestamp('date_mag')->nullable();
             $table->timestamp('date_rec')->nullable();
-
-            $table->boolean('disponible')->default(false);
+            $table->text('motif_refus')->nullable();
+            $table->integer('quantite')->default(1);
+            $table->enum('type', ['mobilisable', 'immobilisable']);
 
             $table->string('id_collaborateur', 10);
             $table->string('id_tech', 10)->nullable();
             $table->string('id_mag', 10)->nullable();
+            $table->string('materiel_id', 10)->nullable();
 
-            $table->timestamp('created_at')->useCurrent();
-            $table->timestamp('updated_at')->useCurrent()->useCurrentOnUpdate();
+            $table->timestamps(); 
 
-            // Clés étrangères vers `utilisateur`
-            $table->foreign('id_collaborateur')->references('id_utilisateur')->on('utilisateur')->onDelete('cascade');
-            $table->foreign('id_tech')->references('id_utilisateur')->on('utilisateur')->onDelete('cascade');
-            $table->foreign('id_mag')->references('id_utilisateur')->on('utilisateur')->onDelete('cascade');
+            // Foreign keys
+            $table->foreign('id_collaborateur')
+                  ->references('id_utilisateur')
+                  ->on('utilisateur')
+                  ->onDelete('cascade');
+
+            $table->foreign('id_tech')
+                  ->references('id_utilisateur')
+                  ->on('utilisateur')
+                  ->onDelete('cascade');
+
+            $table->foreign('id_mag')
+                  ->references('id_utilisateur')
+                  ->on('utilisateur')
+                  ->onDelete('cascade');
+
+            $table->foreign('materiel_id')
+                  ->references('id_m')
+                  ->on('materiel')
+                  ->onDelete('cascade');
         });
     }
 
