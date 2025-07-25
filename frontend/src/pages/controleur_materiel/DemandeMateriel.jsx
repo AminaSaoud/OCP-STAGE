@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { axiosClient } from '../../api/axios';
+import Layout from '../../components/Layout'; // Ajoute ceci si Layout existe
 
 function DemandeMateriel() {
   const [demandes, setDemandes] = useState([]);
@@ -21,52 +22,61 @@ function DemandeMateriel() {
   }, []);
 
   return (
-    <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #232526 0%, #414345 100%)', padding: '40px 0' }}>
-      <div style={{ maxWidth: 900, margin: '0 auto', background: '#18191a', borderRadius: 16, boxShadow: '0 8px 32px 0 rgba(31,38,135,0.37)', padding: 32 }}>
-        <h2 style={{ color: '#00bcd4', textAlign: 'center', marginBottom: 32, letterSpacing: 1 }}>Demandes à traiter (Responsable Matériel)</h2>
-        {loading ? (
-          <div style={{ color: '#fff', textAlign: 'center', padding: 32 }}>Chargement...</div>
-        ) : error ? (
-          <div style={{ color: 'red', textAlign: 'center', padding: 32 }}>{error}</div>
-        ) : (
-          <div style={{ overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse', background: '#232526', color: '#fff', borderRadius: 8, overflow: 'hidden' }}>
-              <thead>
-                <tr style={{ background: '#222', color: '#00bcd4' }}>
-                  <th style={{ border: '1px solid #333', padding: '12px 8px' }}>ID</th>
-                  <th style={{ border: '1px solid #333', padding: '12px 8px' }}>Type</th>
-                  <th style={{ border: '1px solid #333', padding: '12px 8px' }}>Quantité</th>
-                  <th style={{ border: '1px solid #333', padding: '12px 8px' }}>État</th>
-                  <th style={{ border: '1px solid #333', padding: '12px 8px' }}>Action</th>
-                </tr>
-              </thead>
-              <tbody>
-                {demandes.length === 0 && (
-                  <tr>
-                    <td colSpan={5} style={{ textAlign: 'center', color: '#aaa', padding: 32 }}>
-                      Aucune demande à traiter.
-                    </td>
+    <Layout>
+      <div className="max-w-4xl mx-auto py-10">
+        <div className="bg-white rounded-2xl shadow-xl border border-gray-100 p-8">
+          <header className="mb-8 text-center">
+            <h1 className="text-2xl font-bold text-ocp-green mb-2">Demandes à traiter</h1>
+            <p className="text-gray-600 text-lg">Espace Responsable Matériel</p>
+          </header>
+          {loading ? (
+            <div className="text-center text-gray-700 py-12">Chargement...</div>
+          ) : error ? (
+            <div className="text-center text-red-600 py-12">{error}</div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full border-collapse bg-gray-50 rounded-xl text-base">
+                <thead>
+                  <tr className="bg-green-50 text-ocp-green">
+                    <th className="border-b border-gray-200 py-3 px-4">ID</th>
+                    <th className="border-b border-gray-200 py-3 px-4">Type</th>
+                    <th className="border-b border-gray-200 py-3 px-4">Quantité</th>
+                    <th className="border-b border-gray-200 py-3 px-4">État</th>
+                    <th className="border-b border-gray-200 py-3 px-4">Action</th>
                   </tr>
-                )}
-                {demandes.map(demande => (
-                  <tr key={demande.id_demande} style={{ background: '#232526', transition: 'background 0.2s' }}>
-                    <td style={{ border: '1px solid #333', padding: '10px 8px', textAlign: 'center' }}>{demande.id_demande}</td>
-                    <td style={{ border: '1px solid #333', padding: '10px 8px', textAlign: 'center' }}>{demande.type}</td>
-                    <td style={{ border: '1px solid #333', padding: '10px 8px', textAlign: 'center' }}>{demande.quantite}</td>
-                    <td style={{ border: '1px solid #333', padding: '10px 8px', textAlign: 'center' }}>{demande.etat}</td>
-                    <td style={{ border: '1px solid #333', padding: '10px 8px', textAlign: 'center' }}>
-                      <Link to={`/materiel/demandes-materiel/${demande.id_demande}`} style={{ color: '#00bcd4', textDecoration: 'underline', fontWeight: 500 }}>
-                        Détail
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
-        )}
+                </thead>
+                <tbody>
+                  {demandes.length === 0 && (
+                    <tr>
+                      <td colSpan={5} className="text-center text-gray-400 py-10 text-lg">
+                        Aucune demande à traiter.
+                      </td>
+                    </tr>
+                  )}
+                  {demandes.map(demande => (
+                    <tr key={demande.id_demande} className="bg-white hover:bg-green-50 transition">
+                      <td className="border-b border-gray-100 py-3 px-4 text-center font-medium">{demande.id_demande}</td>
+                      <td className="border-b border-gray-100 py-3 px-4 text-center">{demande.type}</td>
+                      <td className="border-b border-gray-100 py-3 px-4 text-center">{demande.quantite}</td>
+                      <td className="border-b border-gray-100 py-3 px-4 text-center">
+                        <span className="inline-block px-3 py-1 rounded-full bg-green-100 text-ocp-green text-sm font-semibold">
+                          {demande.etat}
+                        </span>
+                      </td>
+                      <td className="border-b border-gray-100 py-3 px-4 text-center">
+                        <Link to={`/materiel/demandes-materiel/${demande.id_demande}`} className="text-ocp-green hover:underline font-semibold">
+                          Détail
+                        </Link>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </Layout>
   );
 }
 

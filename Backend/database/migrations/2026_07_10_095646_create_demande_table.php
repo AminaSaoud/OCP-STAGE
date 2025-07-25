@@ -34,7 +34,6 @@ return new class extends Migration
             $table->string('id_collaborateur', 10);
             $table->string('id_tech', 10)->nullable();
             $table->string('id_mag', 10)->nullable();
-            $table->string('materiel_id', 10)->nullable();
 
             $table->timestamps(); 
 
@@ -54,10 +53,6 @@ return new class extends Migration
                   ->on('utilisateur')
                   ->onDelete('cascade');
 
-            $table->foreign('materiel_id')
-                  ->references('id_m')
-                  ->on('materiel')
-                  ->onDelete('cascade');
         });
     }
 

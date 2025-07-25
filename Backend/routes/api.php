@@ -94,11 +94,23 @@ Route::prefix('tech')->middleware(['auth:sanctum','tech.controleur'])->group(fun
     Route::get('/demandes/{id}', [DemandeTechniqueController::class, 'show']);
     Route::post('/demandes/{id}/accepter', [DemandeTechniqueController::class, 'accepter']);
     Route::post('/demandes/{id}/rejeter', [DemandeTechniqueController::class, 'rejeter']);
+    Route::get('/historique', [DemandeTechniqueController::class, 'historiqueTech']);
+
 });
 
+
+
+
+Route::middleware(['auth:sanctum'])->group(function () {
 Route::get('/demandes-a-traiter', [\App\Http\Controllers\DemandesMaterielController::class, 'index']);
 Route::get('/demandes/{id}', [\App\Http\Controllers\DemandesMaterielController::class, 'show']);
 Route::post('/demandes/{id}/affecter-materiel', [\App\Http\Controllers\DemandesMaterielController::class, 'affecterMateriel']);
 Route::post('/demandes/{id}/materiel-indisponible', [\App\Http\Controllers\DemandesMaterielController::class, 'signalerMaterielIndisponible']);
+Route::post('/demandes/{id}/affecter-materiels', [\App\Http\Controllers\DemandesMaterielController::class, 'affecterMateriels']);
 Route::get('/materiels/recherche', [\App\Http\Controllers\DemandesMaterielController::class, 'rechercherMateriel']);
+Route::post('/demandes/{id}/valider', [\App\Http\Controllers\DemandesMaterielController::class, 'validerDemande']);
+Route::get('/demandes/{id}/historique-materiels', [\App\Http\Controllers\DemandesMaterielController::class, 'historiqueMateriels']);
+Route::get('/historique-global', [\App\Http\Controllers\DemandesMaterielController::class, 'historiqueGlobal']);
+Route::get('/technique/historique', [\App\Http\Controllers\DemandeTechniqueController::class, 'historiqueTech']);
 
+});

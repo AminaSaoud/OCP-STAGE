@@ -33,72 +33,138 @@ const Sidebar = ({ isOpen, onToggle }) => {
     }));
   };
 
-  const menuItems = [
-    {
-      key: 'dashboard',
-      label: 'Tableau de bord',
-      icon: Home,
-      path: '/dashboard',
-      badge: null
-    },
-    {
-      key: 'demandes',
-      label: 'Gestion des demandes',
-      icon: FileText,
-      submenu: [
-        { label: 'Nouvelle demande', path: '/ajouter-demande' },
-        { label: 'Mes demandes', path: '/collaborateur/mes-demandes' },
-        { label: 'Toutes les demandes', path: '/toutes-demandes' }
-      ]
-    },
-    {
-      key: 'materiel',
-      label: 'Gestion du matériel',
-      icon: Package,
-      submenu: [
-        { label: 'Inventaire', path: '/inventaire' },
-        { label: 'Ajouter matériel', path: '/ajouter-materiel' },
-        { label: 'Historique', path: '/historique-materiel' }
-      ]
-    },
-    {
-      key: 'utilisateurs',
-      label: 'Utilisateurs',
-      icon: Users,
-      submenu: [
-        { label: 'Tous les utilisateurs', path: '/utilisateurs' },
-        { label: 'Ajouter utilisateur', path: '/ajouter-utilisateur' },
-        { label: 'Profils', path: '/profils' }
-      ]
-    },
-    {
-      key: 'rapports',
-      label: 'Rapports & Statistiques',
-      icon: BarChart3,
-      submenu: [
-        { label: 'Rapports mensuels', path: '/rapports-mensuels' },
-        { label: 'Statistiques', path: '/statistiques' },
-        { label: 'Exports', path: '/exports' }
-      ]
-    },
-    {
-      key: 'calendrier',
-      label: 'Calendrier',
-      icon: Calendar,
-      path: '/calendrier',
-      badge: 'Nouveau'
-    },
-    {
-      key: 'parametres',
-      label: 'Paramètres',
-      icon: Settings,
-      submenu: [
-        { label: 'Profil', path: '/profil' },
-        { label: 'Sécurité', path: '/securite' },
-        { label: 'Notifications', path: '/notifications' }
-      ]
-    }
-  ];
+  let menuItems = [];
+
+  if (user?.role === 'admin') {
+    menuItems = [
+      {
+        key: 'dashboard',
+        label: 'Tableau de bord',
+        icon: Home,
+        path: '/admin/dashboard'
+      },
+      {
+        key: 'demandes',
+        label: 'Gestion des demandes',
+        icon: FileText,
+        submenu: [
+          { label: 'Nouvelle demande', path: '/ajouter-demande' },
+          { label: 'Mes demandes', path: '/collaborateur/mes-demandes' },
+          { label: 'Toutes les demandes', path: '/toutes-demandes' }
+        ]
+      },
+      {
+        key: 'materiel',
+        label: 'Gestion du matériel',
+        icon: Package,
+        submenu: [
+          { label: 'Inventaire', path: '/inventaire' },
+          { label: 'Ajouter matériel', path: '/ajouter-materiel' },
+          { label: 'Historique', path: '/historique-materiel' }
+        ]
+      },
+      {
+        key: 'utilisateurs',
+        label: 'Utilisateurs',
+        icon: Users,
+        submenu: [
+          { label: 'Tous les utilisateurs', path: '/utilisateurs' },
+          { label: 'Ajouter utilisateur', path: '/ajouter-utilisateur' },
+          { label: 'Profils', path: '/profils' }
+        ]
+      },
+      {
+        key: 'rapports',
+        label: 'Rapports & Statistiques',
+        icon: BarChart3,
+        submenu: [
+          { label: 'Rapports mensuels', path: '/rapports-mensuels' },
+          { label: 'Statistiques', path: '/statistiques' },
+          { label: 'Exports', path: '/exports' }
+        ]
+      },
+      {
+        key: 'calendrier',
+        label: 'Calendrier',
+        icon: Calendar,
+        path: '/calendrier',
+        badge: 'Nouveau'
+      },
+      {
+        key: 'parametres',
+        label: 'Paramètres',
+        icon: Settings,
+        submenu: [
+          { label: 'Profil', path: '/profil' },
+          { label: 'Sécurité', path: '/securite' },
+          { label: 'Notifications', path: '/notifications' }
+        ]
+      }
+    ];
+  } else if (user?.role === 'controleur de magasin') {
+    menuItems = [
+      {
+        key: 'demandes-materiel',
+        label: 'Demandes à traiter',
+        icon: FileText,
+        path: '/materiel/demandes-materiel'
+      },
+      {
+        key: 'historique-materiel',
+        label: 'Historique',
+        icon: Package,
+        path: '/materiel/historique-materiel'
+      },
+      {
+        key: 'calendrier',
+        label: 'Calendrier',
+        icon: Calendar,
+        path: '/calendrier'
+      }
+    ];
+  } else if (user?.role === 'collaborateur') {
+    menuItems = [
+      {
+        key: 'ajouter-demande',
+        label: 'Nouvelle demande',
+        icon: FileText,
+        path: '/collaborateur/demande'
+      },
+      {
+        key: 'mes-demandes',
+        label: 'Mes demandes',
+        icon: FileText,
+        path: '/collaborateur/mes-demandes'
+      },
+      {
+        key: 'calendrier',
+        label: 'Calendrier',
+        icon: Calendar,
+        path: '/calendrier'
+      }
+    ];
+  } else if (user?.role === 'controleur technique') {
+    menuItems = [
+      {
+        key: 'demandes-technique',
+        label: 'Demandes techniques',
+        icon: FileText,
+        path: '/technique/demandes'
+      },
+      {
+        key: 'calendrier',
+        label: 'Calendrier',
+        icon: Calendar,
+        path: '/calendrier'
+      },
+      {
+        key: 'historique-technique',
+        label: 'Historique',
+        icon: Package,
+        path: '/technique/historique'
+      }
+    ];
+  }
 
   const filteredMenuItems = menuItems.filter(item =>
     item.label.toLowerCase().includes(searchQuery.toLowerCase()) ||

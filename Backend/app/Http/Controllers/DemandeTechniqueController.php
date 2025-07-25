@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Demande;
-
+use Illuminate\Support\Facades\Auth;
 class DemandeTechniqueController extends Controller
 {
     public function index(Request $request)
@@ -43,6 +43,7 @@ class DemandeTechniqueController extends Controller
         $demande = Demande::findOrFail($id);
         $demande->etat = 'valide_technique';
         $demande->date_tech = now();
+        $demande->id_tech = Auth::user()->id_utilisateur;
         $demande->save();
         return response()->json(['success' => true, 'message' => 'Demande validée avec succès.']);
     }
@@ -51,8 +52,26 @@ class DemandeTechniqueController extends Controller
     {
         $demande = Demande::findOrFail($id);
         $demande->etat = 'refuse';
+        $demande->id_tech = Auth::user()->id_utilisateur;
         $demande->motif_refus = $request->motif_refus; // ou $request->input('motif_refus')
         $demande->save();
         return response()->json(['success' => true, 'message' => 'Demande refusée avec succès.']);
+    }
+
+    public function historiqueTech()
+    {
+        $demandes = \App\Models\Demande::whereIn('etat', [
+                'valide_technique', 'valide', 'materiel_indispo', 'en_affectation', 'refuse'
+            ])
+            ->leftJoin('utilisateur as tech', 'demande.id_tech', '=', 'tech.id_utilisateur')
+            ->select(
+                'demande.*',
+                'tech.nom as tech_nom',
+                'tech.prenom as tech_prenom'
+            )
+            ->orderBy('date_demande', 'desc')
+            ->get();
+
+        return response()->json(['demandes' => $demandes]);
     }
 }

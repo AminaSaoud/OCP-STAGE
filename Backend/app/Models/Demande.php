@@ -49,10 +49,7 @@ class Demande extends Model
         return $this->hasMany(Historique::class, 'id_demande');
     }
 
-    public function materiel()
-    {
-        return $this->belongsTo(Materiel::class, 'materiel_id', 'id_m');
-    }
+   
 
     // Méthodes utilitaires ajoutées
     public function getEtatLabelAttribute()

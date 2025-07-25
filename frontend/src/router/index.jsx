@@ -22,6 +22,9 @@ import ModifierControleurMagasin from "../pages/Admin/ModifierControleurMagasin"
 import DetailDemandeCollaborateur from "../pages/Collaborateur/DetailDemandeCollaborateur";
 import DemandeMateriel from "../pages/controleur_materiel/DemandeMateriel";
 import DetailDemandeMateriel from "../pages/controleur_materiel/DetailDemandeMateriel";
+import Calendrier from "../pages/Calendrier";
+import HistoriqueMateriel from "../pages/controleur_materiel/HistoriqueMateriel";
+import HistoriqueTechnique from "../pages/Technique/HistoriqueTechnique";
 
 export const router = createBrowserRouter([
   {
@@ -181,6 +184,14 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     )
   },
+  {
+    path: "/technique/historique",
+    element: (
+      <ProtectedRoute requiredRole="controleur technique">
+        <HistoriqueTechnique />
+      </ProtectedRoute>
+    )
+  },
 
 
 
@@ -204,4 +215,22 @@ export const router = createBrowserRouter([
       </ProtectedRoute>
     )
   },
+
+  {
+    path: "/calendrier",
+    element: (
+      <ProtectedRoute >
+        <Calendrier />
+      </ProtectedRoute>
+    )
+  },
+  {
+    path: "/materiel/historique-materiel",
+    element: (
+      <ProtectedRoute requiredRole="controleur de magasin">
+        <HistoriqueMateriel />
+      </ProtectedRoute>
+    )
+  },
+
 ]);
